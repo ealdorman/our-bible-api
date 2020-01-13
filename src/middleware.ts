@@ -19,9 +19,10 @@ export const restrictToProvable = (
   console.log('origin:', req.get('origin'));
   console.log('X-Forwarded-For:', req.get('X-Forwarded-For'));
   console.log('X-Real-IP:', req.get('X-Real-IP'));
-  console.log('hostname:', req.hostname);
-  console.log('headers:', req.headers);
-  console.log('request:', req);
+  console.log('X-Real-Origin:', req.get('X-Real-Origin'));
+  // console.log('hostname:', req.hostname);
+  // console.log('headers:', req.headers);
+  // console.log('request:', req);
   
 
 
