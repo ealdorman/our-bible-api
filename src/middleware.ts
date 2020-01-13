@@ -19,6 +19,9 @@ export const restrictToProvable = (
   console.log('origin:', req.get('origin'));
   console.log('X-Forwarded-For:', req.get('X-Forwarded-For'));
   console.log('X-Real-IP:', req.get('X-Real-IP'));
+  console.log('hostname:', req.hostname);
+  console.log('headers:', req.headers);
+  
 
 
   // TO DO: The host is almost certainly wrong. Need to figure out how to limit
