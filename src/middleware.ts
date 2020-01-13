@@ -21,18 +21,19 @@ export const restrictToProvable = (
   console.log('X-Real-IP:', req.get('X-Real-IP'));
   console.log('hostname:', req.hostname);
   console.log('headers:', req.headers);
+  console.log('request:', req);
   
 
 
   // TO DO: The host is almost certainly wrong. Need to figure out how to limit
   // this to calls from Provable.
 
-  if (req.get('host') !== config.provable.host) {
-    return res.status(403).send({
-      success: false,
-      message: 'This route is restricted.',
-    });
-  }
+  // if (req.get('host') !== config.provable.host) {
+  //   return res.status(403).send({
+  //     success: false,
+  //     message: 'This route is restricted.',
+  //   });
+  // }
 
   next();
 };
