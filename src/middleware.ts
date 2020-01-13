@@ -16,6 +16,9 @@ export const restrictToProvable = (
   next: NextFunction
 ) => {
   console.log('restrictToProvable host:', req.get('host'));
+  console.log('X-Forwarded-For:', req.headers['X-Forwarded-For']);
+  console.log('X-Real-IP:', req.headers['X-Real-IP']);
+
 
   // TO DO: The host is almost certainly wrong. Need to figure out how to limit
   // this to calls from Provable.
