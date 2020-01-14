@@ -1,8 +1,8 @@
 {
   "name": "our-bible-api",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Backend resources for Our Bible",
-  "main": "index.js",
+  "main": "build/app.js",
   "scripts": {
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
     "tsc": "tsc",
@@ -16,7 +16,8 @@
     "backend",
     "bible",
     "KJV",
-    "api"
+    "api",
+    "ethereum"
   ],
   "author": "John Wall <john@ealdorman.com>",
   "license": "MIT",

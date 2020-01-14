@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
-import { isEmpty, pick } from 'lodash';
+import { isEmpty } from 'lodash';
 
-import { where } from 'sequelize/types';
 import { Bible } from '../../models/Bible';
 import { Book } from '../../models/Book';
 import { Chapter } from '../../models/Chapter';
@@ -21,6 +20,7 @@ interface IResponse {
   success: boolean;
   message: string;
   text?: string;
+  provableText?: string;
 }
 
 class GetVerse {
@@ -150,6 +150,7 @@ class GetVerse {
         chapter: chapter.name,
         verse: verseNumber,
         text: verse.text,
+        provableText: `${request.bookName}---${chapterNumber}---${verseNumber}---${verse.text}`
       } as IResponse);
     } catch (e) {
       console.log('Get verses error:', e);

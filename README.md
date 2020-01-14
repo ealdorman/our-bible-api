@@ -34,7 +34,7 @@ PROD_DB_HOST=yourDBHost
 
 ### Your database
 
-Create two schema in your database: one named `dev_our_bible`, and one named `prod_our_bible`.
+Create a schema in your dev database named `dev_our_bible`. In your prod database, create a schema named `prod_our_bible`.
 
 ## Usage
 
@@ -44,7 +44,7 @@ Once you've completed setup, you're ready to run the API.
 
 Run `npm run dev`.
 
-If it's your first time running the API, bible data will be added to your database. This may take a while -- a few minutes on a decent machine with decent internet.
+If it's your first time running the API, bible data will be added to your database. This may take a few minutes.
 
 API endpoints will be exposed at `localhost:3006`.
 
@@ -52,7 +52,7 @@ API endpoints will be exposed at `localhost:3006`.
 
 Run `npm run prod`.
 
-If it's your first time running the API, bible data will be added to your database. This may take a while -- a few minutes on a decent machine with decent internet.
+If it's your first time running the API, bible data will be added to your database. This may take a few minutes.
 
 API endpoints will be exposed on port 3007.
 
