@@ -1,4 +1,5 @@
 import { Dialect } from 'sequelize';
+import { join } from 'path';
 
 interface IPlatform {
   port: number;
@@ -11,6 +12,20 @@ interface IPlatform {
   };
   provable: {
     host: string;
+  };
+  infura: {
+    endpoint: string;
+    projectId: string;
+    projectSecret: string;
+    websocket: {
+      url: string;
+    };
+  };
+  contracts: {
+    theBible: {
+      address: string;
+      abiFileName: string;
+    };
   };
 }
 
@@ -42,6 +57,20 @@ const config: IConfig = {
     provable: {
       host: 'localhost:3006',
     },
+    infura: {
+      endpoint: process.env.INFURA_RINKEBY_ENDPOINT as string,
+      projectId: process.env.INFURA_PROJECT_ID as string,
+      projectSecret: process.env.INFURA_PROJECT_SECRET as string,
+      websocket: {
+        url: 'wss://rinkeby.infura.io/ws',
+      },
+    },
+    contracts: {
+      theBible: {
+        address: '0xC89892e0adbabE88dB883F016f56bF7F8fEd910B',
+        abiFileName: join(__dirname, 'contracts', 'TheBible_Rinkeby.json')
+      },
+    },
   },
   prod: {
     port: 3007,
@@ -54,6 +83,21 @@ const config: IConfig = {
     },
     provable: {
       host: 'localhost:3006',
+    },
+    infura: {
+      endpoint: process.env.INFURA_MAINNET_ENDPOINT as string,
+      projectId: process.env.INFURA_PROJECT_ID as string,
+      projectSecret: process.env.INFURA_PROJECT_SECRET as string,
+      websocket: {
+        url: 'wss://mainnet.infura.io/ws',
+      },
+    },
+    contracts: {
+      theBible: {
+        address: '',
+        // abiFileName: join(__dirname, 'contracts', 'TheBible_Mainnet.json')
+        abiFileName: join(__dirname, 'contracts', 'TheBible_Rinkeby.json')
+      },
     },
   },
 };

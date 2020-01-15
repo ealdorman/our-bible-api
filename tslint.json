@@ -10,7 +10,8 @@
     "no-console": false,
     "object-literal-sort-keys": false,
     "quotemark": [true, "single"],
-    "prettier": true
+    "prettier": true,
+    "no-var-requires": false
   },
   "rulesDirectory": [],
   "linterOptions": {

@@ -1,11 +1,10 @@
 import { NextFunction, Request, Response } from 'express';
 import { isEmpty } from 'lodash';
 
-import { Bible } from '../../models/Bible';
 import { Book } from '../../models/Book';
 import { Chapter } from '../../models/Chapter';
 import { Verse } from '../../models/Verse';
-import { getPercentageAdded, stringToInt } from '../../Utils';
+import { stringToInt } from '../../Utils';
 
 interface IRequest {
   bookName?: string;
@@ -35,14 +34,10 @@ class GetVerse {
   }
 
   public init = async () => {
-    console.log('GetVerse request origin:', this.req.get('origin'));
-    console.log('GetVerse request host:', this.req.get('host'));
-
     if (!this.req.params || isEmpty(this.req.params)) {
       return this.res.json({
         success: false,
         message: 'You must include bookName in your request params.',
-        verses: [],
       } as IResponse);
     }
 
@@ -53,7 +48,6 @@ class GetVerse {
         return this.res.json({
           success: false,
           message: 'You must include bookName in your request params.',
-          verses: [],
         } as IResponse);
       }
 
@@ -137,12 +131,6 @@ class GetVerse {
         } as IResponse);
       }
 
-      /**
-       * Because this endpoint is only accessible by Provable, once we get
-       * this far, we can assume the verse will be added to the blockchain.
-       */
-      await this.updateAdded(book.id, chapter.id, verse.id);
-
       return this.res.json({
         success: true,
         message: 'OK',
@@ -150,67 +138,15 @@ class GetVerse {
         chapter: chapter.name,
         verse: verseNumber,
         text: verse.text,
-        provableText: `${request.bookName}---${chapterNumber}---${verseNumber}---${verse.text}`
+        provableText: `${request.bookName}---${chapterNumber}---${verseNumber}---${verse.text}`,
       } as IResponse);
     } catch (e) {
-      console.log('Get verses error:', e);
+      console.log('Get verse error:', e);
 
       this.res.json({
         success: false,
         message: `Could not get verse: ${e}`,
       } as IResponse);
-    }
-  };
-
-  public updateAdded = async (
-    bookId: string,
-    chapterId: number,
-    verseId: number
-  ): Promise<boolean> => {
-    try {
-      await Verse.update({ added: true }, { where: { id: verseId } });
-
-      const chapterVerses = await Verse.findAll({
-        where: { chapterId },
-        attributes: ['added'],
-      });
-
-      await Chapter.update(
-        { percentageAdded: getPercentageAdded(chapterVerses) },
-        { where: { id: chapterId } }
-      );
-
-      const bookChapters = await Chapter.findAll({
-        where: { bookId },
-        attributes: ['id'],
-      });
-
-      const bookChaptersIds = bookChapters.map(item => item.id);
-
-      const bookVerses = await Verse.findAll({
-        where: { chapterId: bookChaptersIds },
-        attributes: ['added'],
-      });
-
-      await Book.update(
-        { percentageAdded: getPercentageAdded(bookVerses) },
-        { where: { id: bookId } }
-      );
-
-      const totalVerseCount = await Verse.count();
-
-      const addedVerseCount = await Verse.count({ where: { added: true } });
-
-      await Bible.update(
-        { percentageAdded: Math.floor(addedVerseCount / totalVerseCount) },
-        { where: { name: 'KJV' } }
-      );
-
-      return true;
-    } catch (e) {
-      console.log('update added error:', e);
-
-      return false;
     }
   };
 }

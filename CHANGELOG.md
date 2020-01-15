@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.0.4] - 2019-01-15
+
+### Added
+
+- Infura integration
+- Get random verse
+
 ## [0.0.3] - 2019-01-13
 
 ### Added

@@ -5,6 +5,7 @@ import * as bodyParser from 'body-parser';
 import * as express from 'express';
 
 import Config from './config';
+import Infura from './Infura';
 import SeedData from './KJVBible/SeedData';
 import { setCors } from './middleware';
 import { books } from './routes/Books';
@@ -33,6 +34,8 @@ sequelize
   .sync()
   .then(async () => {
     await new SeedData().init();
+
+    new Infura().initializeWebsocket();
 
     app.listen(config.port, () => {
       console.log(`Listening in ${Config.env} on port ${config.port}.`);

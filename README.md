@@ -16,21 +16,30 @@ After cloning the repo, run `npm install` in the project's root directory.
 
 ### .env file
 
-You must create a .env in the root directory of this project to move foward! The .env file contains database-related variables.
+You must create a .env in the root directory of this project to move foward! The .env file contains sensitive variables.
 
-Your .env file should look like the following. For \*\_DB_DIALECT, you may use `mysql` or any other dialect supported by [Sequelize](https://www.npmjs.com/package/sequelize).
+Your .env file should look like the following.
 
 ```
 DEV_DB_DIALECT=yourDialect
 DEV_DB_USERNAME=yourUsername
 DEV_DB_PASSWORD=yourPassword
 DEV_DB_HOST=yourDBHost
+INFURA_RINKEBY_ENDPOINT=yourInfuraRinkebyEndpoint
 
 PROD_DB_DIALECT=mysql
 PROD_DB_USERNAME=yourUsername
 PROD_DB_PASSWORD=yourPassword
 PROD_DB_HOST=yourDBHost
+INFURA_MAINNET_ENDPOINT=yourInfuraMainnetEndpoint
+
+INFURA_PROJECT_ID=yourInfuraProjectId
+INFURA_PROJECT_SECRET=yourInfuraProjectSecret
 ```
+
+For \*\_DB_DIALECT, you may use `mysql` or any other dialect supported by [Sequelize](https://www.npmjs.com/package/sequelize).
+
+You will need an [Infura](https://infura.io/) account for the Infura-related variables. Just create an account, create a project, and get the info needed from the "Keys" section of your Infura project.
 
 ### Your database
 
