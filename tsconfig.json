@@ -14,5 +14,8 @@
     "outDir": "./build",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
-  }
+  },
+  "include": [
+    "src/**/*.json"
+  ]
 }
