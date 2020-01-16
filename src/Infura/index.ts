@@ -3,7 +3,7 @@ const Web3 = require('web3');
 import Config from '../config';
 import UpdateVerse from '../routes/Verses/UpdateVerse';
 
-const config = Config[Config.env];
+const config = Config.dev;
 
 let theBibleABI = require(config.contracts.theBible.abiFileName);
 

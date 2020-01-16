@@ -1,8 +1,6 @@
 import { Dialect } from 'sequelize';
 import { join } from 'path';
 
-// TO DO: Put back commented out items done for testing
-
 interface IPlatform {
   port: number;
   db: {
@@ -69,7 +67,7 @@ const config: IConfig = {
     },
     contracts: {
       theBible: {
-        address: '0x2221742c84795deFFd4912304702708a6d9CA617',
+        address: '0xC89892e0adbabE88dB883F016f56bF7F8fEd910B',
         abiFileName: join(__dirname, 'contracts', 'TheBible_Rinkeby.json')
       },
     },
@@ -87,22 +85,17 @@ const config: IConfig = {
       host: 'localhost:3006',
     },
     infura: {
-      // endpoint: process.env.INFURA_MAINNET_ENDPOINT as string,
-      // projectId: process.env.INFURA_PROJECT_ID as string,
-      // projectSecret: process.env.INFURA_PROJECT_SECRET as string,
-      endpoint: process.env.INFURA_RINKEBY_ENDPOINT as string,
+      endpoint: process.env.INFURA_MAINNET_ENDPOINT as string,
       projectId: process.env.INFURA_PROJECT_ID as string,
       projectSecret: process.env.INFURA_PROJECT_SECRET as string,
       websocket: {
-        // url: 'wss://mainnet.infura.io/ws',
-        url: 'wss://rinkeby.infura.io/ws',
+        url: 'wss://mainnet.infura.io/ws',
       },
     },
     contracts: {
       theBible: {
-        address: '0x2221742c84795deFFd4912304702708a6d9CA617',
-        // abiFileName: join(__dirname, 'contracts', 'TheBible_Mainnet.json')
-        abiFileName: join(__dirname, 'contracts', 'TheBible_Rinkeby.json')
+        address: '',
+        abiFileName: join(__dirname, 'contracts', 'TheBible_Mainnet.json')
       },
     },
   },
