@@ -45,6 +45,8 @@ class Infura {
       config.contracts.theBible.address
     );
 
+    console.log('theBibleContract:', theBibleContract);
+
     try {
       theBibleContract.events
         .LogVerseAdded()
