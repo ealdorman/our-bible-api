@@ -5,7 +5,11 @@ import UpdateVerse from '../routes/Verses/UpdateVerse';
 
 const config = Config[Config.env];
 
-const theBibleABI = require(config.contracts.theBible.abiFileName);
+let theBibleABI: any;
+
+try {
+  theBibleABI = require(config.contracts.theBible.abiFileName);
+} catch (_) {}
 
 interface IEvent {
   removed: boolean;
