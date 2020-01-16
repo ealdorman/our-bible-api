@@ -3,9 +3,9 @@ const Web3 = require('web3');
 import Config from '../config';
 import UpdateVerse from '../routes/Verses/UpdateVerse';
 
-const config = Config.dev;
+const config = Config[Config.env];
 
-let theBibleABI = require(config.contracts.theBible.abiFileName);
+const theBibleABI = require(config.contracts.theBible.abiFileName);
 
 interface IEvent {
   removed: boolean;
@@ -36,6 +36,12 @@ interface ILogVerseAddedResult {
 
 class Infura {
   public initializeWebsocket = () => {
+    if (!theBibleABI) {
+      console.log('No contract provided.');
+
+      return;
+    }
+
     const web3 = new Web3(
       new Web3.providers.WebsocketProvider(config.infura.websocket.url)
     );
