@@ -67,7 +67,7 @@ const config: IConfig = {
     },
     contracts: {
       theBible: {
-        address: '0x9725a0211937a3401c2123f2707c5c99e5882633',
+        address: '0x27c0A6B98136D569804e79e23C166feEC786c087',
         abiFileName: join(__dirname, 'contracts', 'TheBible_Rinkeby.json'),
       },
     },
