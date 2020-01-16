@@ -45,48 +45,48 @@ class Infura {
       config.contracts.theBible.address
     );
 
-    console.log('theBibleContract:', theBibleContract);
+    // console.log('theBibleContract:', theBibleContract);
 
-    // try {
-    //   theBibleContract.events
-    //     .LogVerseAdded()
-    //     .on('data', (event: IEvent) => {
-    //       console.log('LogVerseAdded event:', event);
+    try {
+      theBibleContract.events
+        .LogVerseAdded()
+        .on('data', (event: IEvent) => {
+          console.log('LogVerseAdded event:', event);
 
-    //       try {
-    //         const resultValues = event.returnValues;
+          try {
+            const resultValues = event.returnValues;
 
-    //         if (
-    //           !resultValues ||
-    //           !resultValues.book ||
-    //           !resultValues.chapter ||
-    //           !resultValues.verse
-    //         ) {
-    //           console.log(
-    //             'Requisite value(s) missing in LogVerseAdded event data'
-    //           );
-    //         }
+            if (
+              !resultValues ||
+              !resultValues.book ||
+              !resultValues.chapter ||
+              !resultValues.verse
+            ) {
+              console.log(
+                'Requisite value(s) missing in LogVerseAdded event data'
+              );
+            }
 
-    //         new UpdateVerse().init(
-    //           resultValues.book,
-    //           resultValues.chapter,
-    //           resultValues.verse
-    //         );
-    //       } catch (error) {
-    //         console.log('LogVerseAdded event data error:', error);
-    //       }
-    //     })
-    //     .on('error', (error: any) => {
-    //       console.log('LogVerseAdded event error:', error);
-    //     })
-    //     .on('end', (e: any) => {
-    //       console.log('LogVerseAdded websocket closed:', e);
+            new UpdateVerse().init(
+              resultValues.book,
+              resultValues.chapter,
+              resultValues.verse
+            );
+          } catch (error) {
+            console.log('LogVerseAdded event data error:', error);
+          }
+        })
+        .on('error', (error: any) => {
+          console.log('LogVerseAdded event error:', error);
+        })
+        .on('end', (e: any) => {
+          console.log('LogVerseAdded websocket closed:', e);
 
-    //       this.reconnectToWebsocket();
-    //     });
-    // } catch (e) {
-    //   console.log('LogVerseAdded catch error:', e);
-    // }
+          this.reconnectToWebsocket();
+        });
+    } catch (e) {
+      console.log('LogVerseAdded catch error:', e);
+    }
   };
 
   public reconnectToWebsocket = () => {

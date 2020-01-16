@@ -54,11 +54,13 @@ class SeedData {
         }
 
         try {
-          bookObject.chapters?.push({
-            name: parseInt(bookChapter.chapter, 10),
-            percentageAdded: 0,
-            verses,
-          });
+          if (bookObject.chapters) {
+            bookObject.chapters.push({
+              name: parseInt(bookChapter.chapter, 10),
+              percentageAdded: 0,
+              verses,
+            });
+          }
         } catch (e) {
           console.log('Seed data bookObject.chapters error:', e);
         }

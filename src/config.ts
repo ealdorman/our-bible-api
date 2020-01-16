@@ -1,5 +1,5 @@
-import { Dialect } from 'sequelize';
 import { join } from 'path';
+import { Dialect } from 'sequelize';
 
 interface IPlatform {
   port: number;
@@ -68,7 +68,7 @@ const config: IConfig = {
     contracts: {
       theBible: {
         address: '0x9725a0211937a3401c2123f2707c5c99e5882633',
-        abiFileName: join(__dirname, 'contracts', 'TheBible_Rinkeby.json')
+        abiFileName: join(__dirname, 'contracts', 'TheBible_Rinkeby.json'),
       },
     },
   },
@@ -95,7 +95,7 @@ const config: IConfig = {
     contracts: {
       theBible: {
         address: '',
-        abiFileName: join(__dirname, 'contracts', 'TheBible_Mainnet.json')
+        abiFileName: join(__dirname, 'contracts', 'TheBible_Mainnet.json'),
       },
     },
   },
