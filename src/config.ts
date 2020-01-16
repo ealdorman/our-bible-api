@@ -62,7 +62,7 @@ const config: IConfig = {
       projectId: process.env.INFURA_PROJECT_ID as string,
       projectSecret: process.env.INFURA_PROJECT_SECRET as string,
       websocket: {
-        url: 'wss://rinkeby.infura.io/ws',
+        url: `wss://rinkeby.infura.io/ws/v3/${process.env.INFURA_PROJECT_ID as string}`,
       },
     },
     contracts: {
@@ -89,7 +89,7 @@ const config: IConfig = {
       projectId: process.env.INFURA_PROJECT_ID as string,
       projectSecret: process.env.INFURA_PROJECT_SECRET as string,
       websocket: {
-        url: 'wss://mainnet.infura.io/ws',
+        url: `wss://mainnet.infura.io/ws/${process.env.INFURA_PROJECT_ID as string}`,
       },
     },
     contracts: {

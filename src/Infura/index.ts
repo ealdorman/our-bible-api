@@ -3,12 +3,12 @@ const Web3 = require('web3');
 import Config from '../config';
 import UpdateVerse from '../routes/Verses/UpdateVerse';
 
-const config = Config.dev;
+const config = Config[Config.env];
 
-let theBibleABI: any;
+let theBible: any;
 
 try {
-  theBibleABI = require(config.contracts.theBible.abiFileName);
+  theBible = require(config.contracts.theBible.abiFileName);
 } catch (_) {}
 
 interface IEvent {
@@ -40,7 +40,7 @@ interface ILogVerseAddedResult {
 
 class Infura {
   public initializeWebsocket = () => {
-    if (!theBibleABI) {
+    if (!theBible) {
       console.log('No contract provided.');
 
       return;
@@ -50,15 +50,13 @@ class Infura {
       new Web3.providers.WebsocketProvider(config.infura.websocket.url)
     );
 
-    const theBibleContract = new web3.eth.Contract(
-      theBibleABI.abi,
+    const TheBible = new web3.eth.Contract(
+      theBible.abi,
       config.contracts.theBible.address
     );
 
-    // console.log('theBibleContract:', theBibleContract);
-
     try {
-      theBibleContract.events
+      TheBible.events
         .LogVerseAdded()
         .on('data', (event: IEvent) => {
           console.log('LogVerseAdded event:', event);
