@@ -1,4 +1,5 @@
 const Web3 = require('web3');
+import { find } from 'lodash';
 
 import Config from '../config';
 import UpdateVerse from '../routes/Verses/UpdateVerse';
@@ -19,14 +20,9 @@ interface IEvent {
   blockHash: string;
   blockNumber: number;
   address: string;
+  data: string;
+  topics: string[];
   id: string;
-  returnValues: ILogVerseAddedResult;
-  event: 'LogVerseAdded' | 'LogError' | 'LogNewProvableQuery';
-  signature: string;
-  raw: {
-    data: string;
-    topics: string[];
-  };
 }
 
 interface ILogVerseAddedResult {
@@ -39,6 +35,9 @@ interface ILogVerseAddedResult {
 }
 
 class Infura {
+  newBlockHeadersSubscription: any;
+  bibleContractSubscription: any;
+
   public initializeWebsocket = () => {
     if (!theBible) {
       console.log('No contract provided.');
@@ -55,45 +54,105 @@ class Infura {
       config.contracts.theBible.address
     );
 
-    try {
-      TheBible.events
-        .LogVerseAdded()
-        .on('data', (event: IEvent) => {
-          console.log('LogVerseAdded event:', event);
+    // Keep the Infura connection alive by subscribing to newBlockHeaders
+    this.newBlockHeadersSubscription = web3.eth
+      .subscribe('newBlockHeaders')
+      .on('data', (_: any) => {
+        console.log('Infura connection still alive');
+      })
+      .on('error', (error: any) => {
+        console.log('newBlockHeaders subscription error:', error);
+      })
+      .on('end', (e: any) => {
+        console.log('newBlockHeaders websocket closed:', e);
 
-          try {
-            const resultValues = event.returnValues;
+        this.unsubscribeListeners();
 
-            if (
-              !resultValues ||
-              !resultValues.book ||
-              !resultValues.chapter ||
-              !resultValues.verse
-            ) {
-              console.log(
-                'Requisite value(s) missing in LogVerseAdded event data'
-              );
-            }
+        this.reconnectToWebsocket();
+      });
 
-            new UpdateVerse().init(
-              resultValues.book,
-              resultValues.chapter,
-              resultValues.verse
+    const logVerseAddedSignature = find(
+      TheBible._jsonInterface,
+      o => o.name === 'LogVerseAdded'
+    ).signature;
+
+    this.bibleContractSubscription = web3.eth
+      .subscribe('logs', {
+        address: [config.contracts.theBible.address],
+        topics: [logVerseAddedSignature],
+      })
+      .on('data', (e: IEvent) => {
+        console.log('LogVerseAdded event:', e);
+
+        try {
+          const decoded: ILogVerseAddedResult = web3.eth.abi.decodeParameters(
+            [
+              {
+                type: 'string',
+                name: 'book',
+              },
+              {
+                type: 'string',
+                name: 'chapter',
+              },
+              {
+                type: 'string',
+                name: 'verse',
+              },
+            ],
+            e.data
+          );
+
+          if (!decoded || !decoded.book || !decoded.chapter || !decoded.verse) {
+            console.log(
+              'Requisite value(s) missing in LogVerseAdded event data'
             );
-          } catch (error) {
-            console.log('LogVerseAdded event data error:', error);
           }
-        })
-        .on('error', (error: any) => {
-          console.log('LogVerseAdded event error:', error);
-        })
-        .on('end', (e: any) => {
-          console.log('LogVerseAdded websocket closed:', e);
 
-          this.reconnectToWebsocket();
+          new UpdateVerse().init(decoded.book, decoded.chapter, decoded.verse);
+        } catch (e) {
+          console.log('decode error:', e);
+        }
+      })
+      .on('error', (error: any) => {
+        console.log('bibleContractSubscription subscription error:', error);
+      })
+      .on('end', (e: any) => {
+        console.log('bibleContractSubscription websocket closed:', e);
+
+        this.unsubscribeListeners();
+
+        this.reconnectToWebsocket();
+      });
+  };
+
+  public unsubscribeListeners = () => {
+    if (this.bibleContractSubscription) {
+      try {
+        this.bibleContractSubscription.unsubscribe((error: any, _: any) => {
+          if (error) {
+            console.log('bibleContractSubscription ubsub error:', error);
+          }
+
+          console.log('bibleContractSubscription unsubscribed');
         });
-    } catch (e) {
-      console.log('LogVerseAdded catch error:', e);
+      } catch (e) {
+        console.log('bibleContractSubscription unsubscribe error:', e);
+      }
+    }
+
+    if (this.newBlockHeadersSubscription) {
+      try {
+        this.newBlockHeadersSubscription.unsubscribe((error: any, _: any) => {
+          if (error) {
+            console.log('newBlockHeaders ubsub error:', error);
+          }
+
+          console.log('newBlockHeaders unsubscribed');
+        });
+      } catch (e) {
+        console.log('newBlockHeaders unsubscribe error:', e);
+      }
     }
   };
 

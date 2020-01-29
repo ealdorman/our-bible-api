@@ -8,6 +8,7 @@ import Config from './config';
 import Infura from './Infura';
 import SeedData from './KJVBible/SeedData';
 import { setCors } from './middleware';
+import { bible } from './routes/Bible';
 import { books } from './routes/Books';
 import { chapters } from './routes/Chapters';
 import { verses } from './routes/Verses';
@@ -26,6 +27,7 @@ app.get('/', (_, res) => {
   res.sendStatus(200);
 });
 
+app.use('/bible', bible);
 app.use('/books', books);
 app.use('/chapters', chapters);
 app.use('/verses', verses);

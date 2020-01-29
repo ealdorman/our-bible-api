@@ -1,5 +1,15 @@
 # Changelog
 
+## [0.0.5] - 2019-01-29
+
+### Added
+
+- Get bible
+
+### Changed
+
+- Event listener changes
+
 ## [0.0.4] - 2019-01-15
 
 ### Added

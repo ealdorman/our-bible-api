@@ -29,7 +29,7 @@ DEV_DB_PASSWORD=yourPassword
 DEV_DB_HOST=yourDBHost
 INFURA_RINKEBY_ENDPOINT=yourInfuraRinkebyEndpoint
 
-PROD_DB_DIALECT=mysql
+PROD_DB_DIALECT=yourDialect
 PROD_DB_USERNAME=yourUsername
 PROD_DB_PASSWORD=yourPassword
 PROD_DB_HOST=yourDBHost

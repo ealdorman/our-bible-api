@@ -1,6 +1,5 @@
 import { Router } from 'express';
 
-import { publicRateLimit } from '../../middleware';
 import GetRandomVerse from './GetRandomVerse';
 import GetVerse from './GetVerse';
 import GetVerses from './GetVerses';
@@ -11,7 +10,7 @@ verses.get('/random', async (req, res, next) =>
   new GetRandomVerse(req, res, next).init()
 );
 
-verses.get('/:bookName/:chapter', publicRateLimit, async (req, res, next) =>
+verses.get('/:bookName/:chapter', async (req, res, next) =>
   new GetVerses(req, res, next).init()
 );
 
