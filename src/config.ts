@@ -94,7 +94,7 @@ const config: IConfig = {
     },
     contracts: {
       theBible: {
-        address: '',
+        address: '0x635B5D69C84FDbff768443a3E823EE1c07d6eAc8',
         abiFileName: join(__dirname, 'contracts', 'TheBible_Mainnet.json'),
       },
     },

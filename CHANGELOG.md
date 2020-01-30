@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.0.6] - 2019-01-29
+
+### Added
+
+- Production contract
+
 ## [0.0.5] - 2019-01-29
 
 ### Added

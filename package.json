@@ -1,6 +1,6 @@
 {
   "name": "our-bible-api",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "Backend resources for Our Bible",
   "main": "build/app.js",
   "scripts": {
