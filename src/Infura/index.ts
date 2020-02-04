@@ -37,6 +37,7 @@ interface ILogVerseAddedResult {
 class Infura {
   newBlockHeadersSubscription: any;
   bibleContractSubscription: any;
+  web3: any;
 
   public initializeWebsocket = () => {
     if (!theBible) {
@@ -45,17 +46,17 @@ class Infura {
       return;
     }
 
-    const web3 = new Web3(
+    this.web3 = new Web3(
       new Web3.providers.WebsocketProvider(config.infura.websocket.url)
     );
 
-    const TheBible = new web3.eth.Contract(
+    const TheBible = new this.web3.eth.Contract(
       theBible.abi,
       config.contracts.theBible.address
     );
 
     // Keep the Infura connection alive by subscribing to newBlockHeaders
-    this.newBlockHeadersSubscription = web3.eth
+    this.newBlockHeadersSubscription = this.web3.eth
       .subscribe('newBlockHeaders')
       .on('data', (_: any) => {
         console.log('Infura connection still alive');
@@ -66,9 +67,12 @@ class Infura {
       .on('end', (e: any) => {
         console.log('newBlockHeaders websocket closed:', e);
 
-        this.unsubscribeListeners();
+        this.onSocketClose();
+      })
+      .on('close', (e: any) => {
+        console.log('newBlockHeaders websocket closed:', e);
 
-        this.reconnectToWebsocket();
+        this.onSocketClose();
       });
 
     const logVerseAddedSignature = find(
@@ -76,16 +80,19 @@ class Infura {
       o => o.name === 'LogVerseAdded'
     ).signature;
 
-    this.bibleContractSubscription = web3.eth
+    this.bibleContractSubscription = this.web3.eth
       .subscribe('logs', {
         address: [config.contracts.theBible.address],
         topics: [logVerseAddedSignature],
+      })
+      .on('connected', () => {
+        console.log('Infura websocket connected');
       })
       .on('data', (e: IEvent) => {
         console.log('LogVerseAdded event:', e);
 
         try {
-          const decoded: ILogVerseAddedResult = web3.eth.abi.decodeParameters(
+          const decoded: ILogVerseAddedResult = this.web3.eth.abi.decodeParameters(
             [
               {
                 type: 'string',
@@ -118,12 +125,29 @@ class Infura {
         console.log('bibleContractSubscription subscription error:', error);
       })
       .on('end', (e: any) => {
+        console.log('bibleContractSubscription websocket ended:', e);
+
+        this.onSocketClose();
+      })
+      .on('close', (e: any) => {
         console.log('bibleContractSubscription websocket closed:', e);
 
-        this.unsubscribeListeners();
-
-        this.reconnectToWebsocket();
+        this.onSocketClose();
       });
+
+    this.web3.currentProvider.on('end', () => {
+      console.log('Web3 provider closed');
+
+      this.onSocketClose();
+    });
+  };
+
+  public onSocketClose = () => {
+    this.web3 = null;
+
+    this.unsubscribeListeners();
+
+    this.reconnectToWebsocket();
   };
 
   public unsubscribeListeners = () => {
