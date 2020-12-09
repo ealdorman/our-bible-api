@@ -2,8 +2,6 @@
 
 > Backend resources for Our Bible
 
-**⚠️ This repo is under rapid development**
-
 This Node.js/Express API, written in Typescript, is the primary backend package for [Our Bible](https://ourbible.io).
 
 You'll need [Node.js](https://nodejs.org/en/download/) installed.
